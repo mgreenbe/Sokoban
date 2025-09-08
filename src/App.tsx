@@ -10,13 +10,15 @@ extend({
   Sprite,
 });
 
-const [Box, BoxOnTarget, Player, Target, Wall] = await loadSprites([
-  "box",
-  "box_on_target",
-  "player",
-  "target",
-  "wall",
-]);
+const [Box, BoxOnTarget, Player, PlayerOnTarget, Target, Wall] =
+  await loadSprites([
+    "box",
+    "box_on_target",
+    "player",
+    "player_on_target",
+    "target",
+    "wall",
+  ]);
 
 const walls = [
   [2, 0],
@@ -97,7 +99,11 @@ export default function App() {
             <Box x={32 * x} y={32 * y} key={`Box-${i}`} />
           )
         )}
-        <Player x={32 * player[0]} y={32 * player[1]} key="player" />
+        {targetCells.includes(player[0] + 8 * player[1]) ? (
+          <PlayerOnTarget x={32 * player[0]} y={32 * player[1]} key="player" />
+        ) : (
+          <Player x={32 * player[0]} y={32 * player[1]} key="player" />
+        )}
       </Application>
     </div>
   );

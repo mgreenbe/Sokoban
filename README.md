@@ -2,9 +2,13 @@
 
 With `pixi.js`, `@pixi/react`, and `vite`.
 
-Run the game in dev mode:
+Install dependencies:
 ```bash
 npm i
+```
+
+Run the game in dev mode:
+```bash
 npm run dev
 ```
 

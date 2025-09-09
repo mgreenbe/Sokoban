@@ -1,29 +1,3 @@
-export function makeBoard(s: string) {
-  let x = 0;
-  let y = 0;
-  const walls = [];
-  const boxes = [];
-  const targets = [];
-  const player = [];
-  for (const c of s.trim()) {
-    if (c === "\n") {
-      y += 1;
-      x = 0;
-      continue;
-    } else if (c === "#") {
-      walls.push([x, y]);
-    } else if (c === "$") {
-      boxes.push([x, y]);
-    } else if (c === ".") {
-      targets.push([x, y]);
-    } else if (c === "@") {
-      player.push(x, y);
-    }
-    x += 1;
-  }
-  return { ncols: x, nrows: y + 1, walls, boxes, targets, player };
-}
-
 export class Board {
   readonly s: string;
   readonly ncols: number = 0;

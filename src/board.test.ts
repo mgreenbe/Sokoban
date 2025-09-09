@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { Board } from "./board";
+import { Board } from "./Board";
 
 test("width 1, height 1", () => {
   const s = "#";
@@ -51,7 +51,7 @@ test("2 targets, 1 player", () => {
   expect(board.initialPlayerCell).toBe(7);
   expect(board.coords(board.initialPlayerCell)).toEqual([2, 1]);
   expect(board.targetCells).toEqual([6, 8]);
-  expect(board.allCoords(board.targetCells)).toEqual([
+  expect(board.coords(board.targetCells)).toEqual([
     [1, 1],
     [3, 1],
   ]);
@@ -66,12 +66,7 @@ test("2 targets, 3 boxes, 1 player", () => {
   expect(board.coords(board.initialPlayerCell)).toEqual([2, 1]);
   expect(board.targetCells).toEqual([6, 8]);
   expect(board.initialBoxCells).toEqual([11, 12, 13]);
-  expect(board.allCoords(board.initialBoxCells)).toEqual([
-    [1, 2],
-    [2, 2],
-    [3, 2],
-  ]);
-  expect(board.boxCoords).toEqual([
+  expect(board.coords(board.initialBoxCells)).toEqual([
     [1, 2],
     [2, 2],
     [3, 2],
@@ -94,20 +89,14 @@ test("fancy board", () => {
   expect(board.initialPlayerCell).toBe(84);
   expect(board.coords(board.initialPlayerCell)).toEqual([4, 8]);
   expect(board.initialBoxCells).toEqual([55, 57, 76, 77]);
-  expect(board.allCoords(board.initialBoxCells)).toEqual([
-    [5, 5],
-    [7, 5],
-    [6, 7],
-    [7, 7],
-  ]);
-  expect(board.boxCoords).toEqual([
+  expect(board.coords(board.initialBoxCells)).toEqual([
     [5, 5],
     [7, 5],
     [6, 7],
     [7, 7],
   ]);
   expect(board.targetCells).toEqual([34, 38, 46, 78]);
-  expect(board.allCoords(board.targetCells)).toEqual([
+  expect(board.coords(board.targetCells)).toEqual([
     [4, 3],
     [8, 3],
     [6, 4],

@@ -1,22 +1,16 @@
+import { useEffect, useState } from "react";
 import { Application, extend } from "@pixi/react";
-import { Container, Graphics, Sprite } from "pixi.js";
+import { Sprite } from "pixi.js";
+import { Board } from "./Board";
 import { loadSprites } from "./makeSprite";
 import "./App.css";
-import { Board } from "./board";
-import { useEffect, useState } from "react";
-
-// type GameState = {
-//   playerCell: number;
-//   boxCells: number[];
-// };
 
 const CELL_W = 32;
 const CELL_H = 32;
 
-// extend tells @pixi/react what Pixi.js components are available
+// Extend tells @pixi/react what Pixi.js components are available.
+// Apparently I don't need Container or Graphics.
 extend({
-  Container,
-  Graphics,
   Sprite,
 });
 

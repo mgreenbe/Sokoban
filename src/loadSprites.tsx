@@ -1,5 +1,4 @@
 import { Assets } from "pixi.js";
-// import { useEffect, useRef, useState } from "react";
 import "@pixi/react";
 
 interface SpriteProps {

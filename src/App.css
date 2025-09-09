@@ -1,12 +1,25 @@
 .container {
   display: inline-block;
+  margin: 20px;
 }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  background-color: lightpink;
+}
+
+.title {
+  margin-left: 20px;
+  margin-block: 0px;
+}
+
 .board {
   padding: 20px;
   background-color: bisque;
 }
 
-.message {
+.status {
   padding: 20px;
   background-color: paleturquoise;
 }

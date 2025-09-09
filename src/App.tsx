@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Application, extend } from "@pixi/react";
 import { Sprite } from "pixi.js";
 import { Board } from "./Board";
-import { loadSprites } from "./makeSprite";
+import { loadSprites } from "./loadSprites";
 import "./App.css";
 
 const CELL_W = 32;
@@ -88,6 +88,10 @@ export default function App() {
 
   return (
     <div className="container">
+      <div className="header">
+        <h1 className="title">Sokoban</h1>
+        <img src="https://upload.wikimedia.org/wikipedia/en/0/0f/Official_Sokoban_website_banner.png" />
+      </div>
       <div className="board">
         <Application
           background={"black"}
@@ -126,7 +130,7 @@ export default function App() {
           )}
         </Application>
       </div>
-      <div className="message">
+      <div className="status">
         <span>{isWinner ? <b>You win!</b> : "In progress..."}</span>
       </div>
     </div>

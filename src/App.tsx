@@ -55,6 +55,8 @@ export default function App() {
   const [playerCol, playerRow] = board.coords(playerCell);
   const boxCoords = board.coords(boxCells);
 
+  const isWinner = board.isWinner(boxCells);
+
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (
@@ -86,38 +88,47 @@ export default function App() {
 
   return (
     <div className="container">
-      <Application
-        background={"black"}
-        width={CELL_W * ncols}
-        height={CELL_H * nrows}
-      >
-        {wallCoords.map(([col, row], i) => (
-          <Wall x={CELL_W * col} y={CELL_H * row} key={`Wall-${i}`} />
-        ))}
-        {targetCoords.map(([col, row], i) => (
-          <Target x={CELL_W * col} y={CELL_H * row} key={`Target-${i}`} />
-        ))}
-        {boxCoords.map(([col, row], i) =>
-          targetCells.includes(boxCells[i]) ? (
-            <BoxOnTarget
-              x={CELL_W * col}
-              y={CELL_W * row}
-              key={`BoxOnTarget-${i}`}
+      <div className="board">
+        <Application
+          background={"black"}
+          width={CELL_W * ncols}
+          height={CELL_H * nrows}
+        >
+          {wallCoords.map(([col, row], i) => (
+            <Wall x={CELL_W * col} y={CELL_H * row} key={`Wall-${i}`} />
+          ))}
+          {targetCoords.map(([col, row], i) => (
+            <Target x={CELL_W * col} y={CELL_H * row} key={`Target-${i}`} />
+          ))}
+          {boxCoords.map(([col, row], i) =>
+            targetCells.includes(boxCells[i]) ? (
+              <BoxOnTarget
+                x={CELL_W * col}
+                y={CELL_W * row}
+                key={`BoxOnTarget-${i}`}
+              />
+            ) : (
+              <Box x={CELL_W * col} y={CELL_H * row} key={`Box-${i}`} />
+            )
+          )}
+          {targetCells.includes(playerCell) ? (
+            <PlayerOnTarget
+              x={CELL_W * playerCol}
+              y={CELL_W * playerRow}
+              key="PlayerOnTarget"
             />
           ) : (
-            <Box x={CELL_W * col} y={CELL_H * row} key={`Box-${i}`} />
-          )
-        )}
-        {targetCells.includes(playerCell) ? (
-          <PlayerOnTarget
-            x={CELL_W * playerCol}
-            y={CELL_W * playerRow}
-            key="PlayerOnTarget"
-          />
-        ) : (
-          <Player x={CELL_W * playerCol} y={CELL_H * playerRow} key="Player" />
-        )}
-      </Application>
+            <Player
+              x={CELL_W * playerCol}
+              y={CELL_H * playerRow}
+              key="Player"
+            />
+          )}
+        </Application>
+      </div>
+      <div className="message">
+        <span>{isWinner ? <b>You win!</b> : "In progress..."}</span>
+      </div>
     </div>
   );
 }

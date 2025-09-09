@@ -1,5 +1,12 @@
 .container {
+  display: inline-block;
+}
+.board {
   padding: 20px;
   background-color: bisque;
-  display: inline-block
+}
+
+.message {
+  padding: 20px;
+  background-color: paleturquoise;
 }

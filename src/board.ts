@@ -60,4 +60,10 @@ export class Board {
       return cell.map((c) => this.coords(c));
     }
   }
+
+  isWinner(boxCells: number[]): boolean {
+    const A = new Set(boxCells);
+    const B = new Set(this.targetCells);
+    return A.size == B.size && A.isSubsetOf(B);
+  }
 }

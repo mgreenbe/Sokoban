@@ -19,6 +19,16 @@
   background-color: bisque;
 }
 
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.buttons > button {
+  flex-grow: 1
+}
+
 .status {
   padding: 20px;
   background-color: paleturquoise;

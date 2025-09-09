@@ -1,3 +1,6 @@
+export type Cell = number;
+export type Coords = [number, number];
+
 export class Board {
   readonly s: string;
   readonly ncols: number = 0;
@@ -8,12 +11,12 @@ export class Board {
     ArrowUp: number;
     ArrowDown: number;
   }; // short for cell-deltas
-  readonly initialPlayerCell: number = -1;
-  readonly initialBoxCells: number[];
-  readonly targetCells: number[];
-  readonly targetCoords: [number, number][];
-  readonly wallCells: number[];
-  readonly wallCoords: [number, number][];
+  readonly initialPlayerCell: Cell = -1;
+  readonly initialBoxCells: Cell[];
+  readonly targetCells: Cell[];
+  readonly targetCoords: Coords[];
+  readonly wallCells: Cell[];
+  readonly wallCoords: Coords[];
 
   constructor(s: string) {
     this.s = s;
@@ -49,19 +52,19 @@ export class Board {
     this.targetCoords = this.coords(this.targetCells);
   }
 
-  coords(cell: number): [number, number];
-  coords(cell: number[]): [number, number][];
-  coords(cell: number | number[]): [number, number] | [number, number][] {
-    if (typeof cell == "number") {
-      const col = cell % this.ncols;
-      const row = (cell - col) / this.ncols;
+  coords(cell_or_cells: Cell): Coords;
+  coords(cell_or_cells: Cell[]): Coords[];
+  coords(cell_or_cells: Cell | Cell[]): Coords | Coords[] {
+    if (typeof cell_or_cells == "number") {
+      const col = cell_or_cells % this.ncols;
+      const row = (cell_or_cells - col) / this.ncols;
       return [col, row];
     } else {
-      return cell.map((c) => this.coords(c));
+      return cell_or_cells.map((cell) => this.coords(cell));
     }
   }
 
-  isWinner(boxCells: number[]): boolean {
+  isWinner(boxCells: Cell[]): boolean {
     const A = new Set(boxCells);
     const B = new Set(this.targetCells);
     return A.size == B.size && A.isSubsetOf(B);

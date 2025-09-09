@@ -27,16 +27,7 @@ const levelString = `##########
 ##########`;
 
 const board = new Board(levelString);
-const {
-  ncols,
-  nrows,
-  boxes,
-  boxCoords,
-  playerCoords,
-  targetCoords,
-  targets,
-  wallCoords,
-} = board;
+const { ncols, nrows, boxes, player, targets } = board;
 
 console.log({ ncols, nrows });
 
@@ -51,19 +42,33 @@ const [Box, BoxOnTarget, Player, PlayerOnTarget, Target, Wall] =
   ]);
 
 export default function App() {
-  const [pos, setPos] = useState(playerCoords);
+  const [playerCell, setPlayerCell] = useState(player);
+
+  const [playerCol, playerRow] = board.coords(playerCell);
+
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      console.log(e.key);
-      const [col, row] = pos;
-      if (e.key === "ArrowLeft") {
-        setPos([col - 1, row]);
-      } else if (e.key === "ArrowRight") {
-        setPos([col + 1, row]);
-      } else if (e.key === "ArrowUp") {
-        setPos([col, row - 1]);
-      } else if (e.key === "ArrowDown") {
-        setPos([col, row + 1]);
+      // let destCell = playerCell;
+      if (
+        e.key === "ArrowLeft" ||
+        e.key === "ArrowRight" ||
+        e.key === "ArrowUp" ||
+        e.key === "ArrowDown"
+      ) {
+        console.log(e.key);
+        const celta = board.celtas[e.key];
+        const destCell = playerCell + celta;
+        const boxIndex = board.boxes.indexOf(destCell);
+        if (boxIndex > -1) {
+          const boxDestCell = destCell + celta;
+          if (!board.isWall(boxDestCell) && !board.isBox(boxDestCell)) {
+            console.log("Hi!");
+            board.boxes[boxIndex] = boxDestCell;
+            setPlayerCell(destCell);
+          }
+        } else if (!board.isWall(destCell)) {
+          setPlayerCell(destCell);
+        }
       }
     };
     window.addEventListener("keyup", handler);
@@ -77,13 +82,13 @@ export default function App() {
         width={CELL_W * ncols}
         height={CELL_H * nrows}
       >
-        {wallCoords.map(([col, row], i) => (
+        {board.wallCoords.map(([col, row], i) => (
           <Wall x={CELL_W * col} y={CELL_H * row} key={`Wall-${i}`} />
         ))}
-        {targetCoords.map(([col, row], i) => (
+        {board.targetCoords.map(([col, row], i) => (
           <Target x={CELL_W * col} y={CELL_H * row} key={`Target-${i}`} />
         ))}
-        {boxCoords.map(([col, row], i) =>
+        {board.boxCoords.map(([col, row], i) =>
           targets.includes(boxes[i]) ? (
             <BoxOnTarget
               x={CELL_W * col}
@@ -94,14 +99,14 @@ export default function App() {
             <Box x={CELL_W * col} y={CELL_H * row} key={`Box-${i}`} />
           )
         )}
-        {targets.includes(board.cell(pos)) ? (
+        {board.targets.includes(playerCell) ? (
           <PlayerOnTarget
-            x={CELL_W * pos[0]}
-            y={CELL_W * pos[1]}
+            x={CELL_W * playerCol}
+            y={CELL_W * playerRow}
             key="player"
           />
         ) : (
-          <Player x={CELL_W * pos[0]} y={CELL_H * pos[1]} key="player" />
+          <Player x={CELL_W * playerCol} y={CELL_H * playerRow} key="player" />
         )}
       </Application>
     </div>

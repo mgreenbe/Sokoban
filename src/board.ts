@@ -31,6 +31,12 @@ export class Board {
   readonly nrows: number = 0;
   readonly walls: number[];
   readonly targets: number[];
+  readonly celtas: {
+    ArrowLeft: number;
+    ArrowRight: number;
+    ArrowUp: number;
+    ArrowDown: number;
+  };
   boxes: number[];
 
   constructor(s: string) {
@@ -57,6 +63,20 @@ export class Board {
       this.ncols += 1;
     }
     this.nrows += 1;
+    this.celtas = {
+      ArrowLeft: -1,
+      ArrowRight: 1,
+      ArrowUp: -this.ncols,
+      ArrowDown: this.ncols,
+    };
+  }
+
+  isWall(cell: number) {
+    return this.walls.includes(cell);
+  }
+
+  isBox(cell: number) {
+    return this.boxes.includes(cell);
   }
 
   cell([col, row]: [number, number]) {

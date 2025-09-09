@@ -57,7 +57,6 @@ export default function App() {
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      // let destCell = playerCell;
       if (
         e.key === "ArrowLeft" ||
         e.key === "ArrowRight" ||

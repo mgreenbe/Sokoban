@@ -48,10 +48,10 @@ test("2 targets, 1 player", () => {
   const board = new Board(s);
   expect(board.ncols).toBe(5);
   expect(board.nrows).toBe(3);
-  expect(board.player).toBe(7);
-  expect(board.coords(board.player)).toEqual([2, 1]);
-  expect(board.targets).toEqual([6, 8]);
-  expect(board.allCoords(board.targets)).toEqual([
+  expect(board.initialPlayerCell).toBe(7);
+  expect(board.coords(board.initialPlayerCell)).toEqual([2, 1]);
+  expect(board.targetCells).toEqual([6, 8]);
+  expect(board.allCoords(board.targetCells)).toEqual([
     [1, 1],
     [3, 1],
   ]);
@@ -62,11 +62,11 @@ test("2 targets, 3 boxes, 1 player", () => {
   const board = new Board(s);
   expect(board.ncols).toBe(5);
   expect(board.nrows).toBe(4);
-  expect(board.player).toBe(7);
-  expect(board.coords(board.player)).toEqual([2, 1]);
-  expect(board.targets).toEqual([6, 8]);
-  expect(board.boxes).toEqual([11, 12, 13]);
-  expect(board.allCoords(board.boxes)).toEqual([
+  expect(board.initialPlayerCell).toBe(7);
+  expect(board.coords(board.initialPlayerCell)).toEqual([2, 1]);
+  expect(board.targetCells).toEqual([6, 8]);
+  expect(board.initialBoxCells).toEqual([11, 12, 13]);
+  expect(board.allCoords(board.initialBoxCells)).toEqual([
     [1, 2],
     [2, 2],
     [3, 2],
@@ -91,10 +91,10 @@ test("fancy board", () => {
 ### @    #
 ##########`;
   const board = new Board(s);
-  expect(board.player).toBe(84);
-  expect(board.coords(board.player)).toEqual([4, 8]);
-  expect(board.boxes).toEqual([55, 57, 76, 77]);
-  expect(board.allCoords(board.boxes)).toEqual([
+  expect(board.initialPlayerCell).toBe(84);
+  expect(board.coords(board.initialPlayerCell)).toEqual([4, 8]);
+  expect(board.initialBoxCells).toEqual([55, 57, 76, 77]);
+  expect(board.allCoords(board.initialBoxCells)).toEqual([
     [5, 5],
     [7, 5],
     [6, 7],
@@ -106,8 +106,8 @@ test("fancy board", () => {
     [6, 7],
     [7, 7],
   ]);
-  expect(board.targets).toEqual([34, 38, 46, 78]);
-  expect(board.allCoords(board.targets)).toEqual([
+  expect(board.targetCells).toEqual([34, 38, 46, 78]);
+  expect(board.allCoords(board.targetCells)).toEqual([
     [4, 3],
     [8, 3],
     [6, 4],

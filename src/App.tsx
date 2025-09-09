@@ -5,6 +5,11 @@ import "./App.css";
 import { Board } from "./board";
 import { useEffect, useState } from "react";
 
+// type GameState = {
+//   playerCell: number;
+//   boxCells: number[];
+// };
+
 const CELL_W = 32;
 const CELL_H = 32;
 
@@ -27,9 +32,17 @@ const levelString = `##########
 ##########`;
 
 const board = new Board(levelString);
-const { ncols, nrows, boxes, player, targets } = board;
-
-console.log({ ncols, nrows });
+const {
+  ncols,
+  nrows,
+  celtas,
+  initialBoxCells,
+  initialPlayerCell,
+  targetCells,
+  targetCoords,
+  wallCells,
+  wallCoords,
+} = board;
 
 const [Box, BoxOnTarget, Player, PlayerOnTarget, Target, Wall] =
   await loadSprites([
@@ -42,9 +55,11 @@ const [Box, BoxOnTarget, Player, PlayerOnTarget, Target, Wall] =
   ]);
 
 export default function App() {
-  const [playerCell, setPlayerCell] = useState(player);
+  const [playerCell, setPlayerCell] = useState(initialPlayerCell);
+  const [boxCells, setBoxCells] = useState(initialBoxCells);
 
   const [playerCol, playerRow] = board.coords(playerCell);
+  const boxCoords = board.coords(boxCells);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -55,19 +70,20 @@ export default function App() {
         e.key === "ArrowUp" ||
         e.key === "ArrowDown"
       ) {
-        console.log(e.key);
-        const celta = board.celtas[e.key];
-        const destCell = playerCell + celta;
-        const boxIndex = board.boxes.indexOf(destCell);
+        const celta = celtas[e.key];
+        const playerDestCell = playerCell + celta;
+        const boxIndex = boxCells.indexOf(playerDestCell);
         if (boxIndex > -1) {
-          const boxDestCell = destCell + celta;
-          if (!board.isWall(boxDestCell) && !board.isBox(boxDestCell)) {
-            console.log("Hi!");
-            board.boxes[boxIndex] = boxDestCell;
-            setPlayerCell(destCell);
+          const boxDestCell = playerDestCell + celta;
+          if (
+            !wallCells.includes(boxDestCell) &&
+            !boxCells.includes(boxDestCell)
+          ) {
+            setBoxCells(boxCells.toSpliced(boxIndex, 1, boxDestCell));
+            setPlayerCell(playerDestCell);
           }
-        } else if (!board.isWall(destCell)) {
-          setPlayerCell(destCell);
+        } else if (!wallCells.includes(playerDestCell)) {
+          setPlayerCell(playerDestCell);
         }
       }
     };
@@ -82,14 +98,14 @@ export default function App() {
         width={CELL_W * ncols}
         height={CELL_H * nrows}
       >
-        {board.wallCoords.map(([col, row], i) => (
+        {wallCoords.map(([col, row], i) => (
           <Wall x={CELL_W * col} y={CELL_H * row} key={`Wall-${i}`} />
         ))}
-        {board.targetCoords.map(([col, row], i) => (
+        {targetCoords.map(([col, row], i) => (
           <Target x={CELL_W * col} y={CELL_H * row} key={`Target-${i}`} />
         ))}
-        {board.boxCoords.map(([col, row], i) =>
-          targets.includes(boxes[i]) ? (
+        {boxCoords.map(([col, row], i) =>
+          targetCells.includes(boxCells[i]) ? (
             <BoxOnTarget
               x={CELL_W * col}
               y={CELL_W * row}
@@ -99,14 +115,14 @@ export default function App() {
             <Box x={CELL_W * col} y={CELL_H * row} key={`Box-${i}`} />
           )
         )}
-        {board.targets.includes(playerCell) ? (
+        {targetCells.includes(playerCell) ? (
           <PlayerOnTarget
             x={CELL_W * playerCol}
             y={CELL_W * playerRow}
-            key="player"
+            key="PlayerOnTarget"
           />
         ) : (
-          <Player x={CELL_W * playerCol} y={CELL_H * playerRow} key="player" />
+          <Player x={CELL_W * playerCol} y={CELL_H * playerRow} key="Player" />
         )}
       </Application>
     </div>
